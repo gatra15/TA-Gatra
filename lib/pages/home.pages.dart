@@ -28,8 +28,8 @@ class _HomeState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 24, top: 20),
+            const Padding(
+              padding: EdgeInsets.only(left: 24, top: 20),
               child: Text(
                 'CHARACTER',
                 style: TextStyle(
@@ -37,44 +37,73 @@ class _HomeState extends State<HomePage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 24),
+              padding: const EdgeInsets.all(20),
               child: SizedBox(
                 child: FutureBuilder<List<Show>>(
                     future: shows,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return ListView.builder(
-                          physics: ClampingScrollPhysics(),
+                          physics: const ClampingScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: snapshot.data!.length,
                           itemBuilder: (BuildContext context, int index) =>
-                              ListTile(
-                            leading: Image.network(
-                              snapshot.data![index].imgUrl,
-                            ),
-                            title: Text(
-                              snapshot.data![index].nama,
-                              style: GoogleFonts.ubuntu(),
-                            ),
-                            subtitle: Text(
-                              snapshot.data![index].status,
-                              style: GoogleFonts.ubuntu(),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailPage(
-                                    nama: snapshot.data![index].nama,
-                                    item: snapshot.data![index].id,
+                              Container(
+                            margin: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.5),
+                                  offset: const Offset(
+                                    5.0,
+                                    5.0,
                                   ),
+                                  blurRadius: 10.0,
+                                  spreadRadius: 1.0,
                                 ),
-                              );
-                            },
+                                //BoxShadow
+                              ],
+                            ),
+                            child: Card(
+                              color: index % 2 == 0
+                                  ? Color(0xff219ebc)
+                                  : Color(0xff8ecae6),
+                              shadowColor: Colors.black,
+                              child: ListTile(
+                                leading: Image.network(
+                                  snapshot.data![index].imgUrl,
+                                ),
+                                title: Text(
+                                  snapshot.data![index].nama,
+                                  style: GoogleFonts.ubuntu(
+                                      color: index % 2 == 0
+                                          ? Colors.white
+                                          : Colors.black),
+                                ),
+                                subtitle: Text(
+                                  snapshot.data![index].status,
+                                  style: GoogleFonts.ubuntu(
+                                      color: index % 2 == 0
+                                          ? Colors.white
+                                          : Colors.black),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailPage(
+                                        nama: snapshot.data![index].nama,
+                                        item: snapshot.data![index].id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                         );
                       }
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     }),
               ),
             ),
